@@ -1,8 +1,8 @@
-п»їimport logging
+import logging
 from telegram import Update, LabeledPrice, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, CommandHandler, PreCheckoutQueryHandler, MessageHandler, filters, ContextTypes
 
-BOT_TOKEN = "8580720167:AAFOSB1W2FMpv0hVZmcXO15kMWnPvLCSPBg"
+BOT_TOKEN = "8580720167:AAHEpDifcP8qcKFHOxbKXVAoS9psVgk0U5I"
 PROXY = {"server": "188.132.184.166", "port": 443, "secret": "289e4b345eca25ad67c1026bee7c6915"}
 STARS_PRICE = 1
 logging.basicConfig(level=logging.INFO)
@@ -11,10 +11,10 @@ logger = logging.getLogger(__name__)
 def proxy_link(p): return "https://t.me/proxy?server=" + p["server"] + "&port=" + str(p["port"]) + "&secret=" + p["secret"]
 
 async def start(u, c):
-    await u.message.reply_text("рџ‘‹ РџСЂРёРІРµС‚!\n\nрџ’° РЎС‚РѕРёРјРѕСЃС‚СЊ: *1 Р·РІРµР·РґР°*\n\nРќР°Р¶РјРёС‚Рµ /buy С‡С‚РѕР±С‹ РєСѓРїРёС‚СЊ РїСЂРѕРєСЃРё!", parse_mode="Markdown")
+    await u.message.reply_text("?? Привет!\n\n?? Стоимость: *1 звезда*\n\nНажмите /buy чтобы купить прокси!", parse_mode="Markdown")
 
 async def buy(u, c):
-    await c.bot.send_invoice(chat_id=u.effective_chat.id, title="MTProxy", description="РћР±С…РѕРґ Р±Р»РѕРєРёСЂРѕРІРєРё Р РѕСЃРєРѕРјРЅР°РґР·РѕСЂР°", payload="proxy_purchase", currency="XTR", prices=[LabeledPrice("MTProxy", 1)])
+    await c.bot.send_invoice(chat_id=u.effective_chat.id, title="MTProxy", description="Обход блокировки Роскомнадзора", payload="proxy_purchase", currency="XTR", prices=[LabeledPrice("MTProxy", 1)])
 
 async def precheckout(u, c):
     q = u.pre_checkout_query
@@ -22,7 +22,7 @@ async def precheckout(u, c):
 
 async def successful_payment(u, c):
     link = proxy_link(PROXY)
-    await u.message.reply_text("вњ… *РћРїР»Р°С‚Р° РїСЂРѕС€Р»Р°!*\n\nрџ‘‰ [РџРѕРґРєР»СЋС‡РёС‚СЊСЃСЏ](" + link + ")", parse_mode="Markdown", disable_web_page_preview=True)
+    await u.message.reply_text("? *Оплата прошла!*\n\n?? [Подключиться](" + link + ")", parse_mode="Markdown", disable_web_page_preview=True)
 
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
