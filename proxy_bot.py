@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def proxy_link(p): return "https://t.me/proxy?server=" + p["server"] + "&port=" + str(p["port"]) + "&secret=" + p["secret"]
 
 async def start(u, c):
-    await u.message.reply_text("👋 Привет!\n\n💰 Стоимость: *1 звезда*\n\nНажмите кнопку:", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("💳 Купить — 1 ⭐", callback_data="buy")]]))
+    await u.message.reply_text("👋 Привет!\n\n💰 Стоимость: *1 звезда*\n\nНажмите /buy чтобы купить прокси!", parse_mode="Markdown")
 
 async def buy(u, c):
     await c.bot.send_invoice(chat_id=u.effective_chat.id, title="MTProxy", description="Обход блокировки Роскомнадзора", payload="proxy_purchase", currency="XTR", prices=[LabeledPrice("MTProxy", 1)])
@@ -24,16 +24,10 @@ async def successful_payment(u, c):
     link = proxy_link(PROXY)
     await u.message.reply_text("✅ *Оплата прошла!*\n\n👉 [Подключиться](" + link + ")", parse_mode="Markdown", disable_web_page_preview=True)
 
-async def button_callback(u, c):
-    q = u.callback_query
-    await q.answer()
-    if q.data == "buy": await buy(u, c)
-
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("buy", buy))
-    app.add_handler(CallbackQueryHandler(button_callback))
     app.add_handler(PreCheckoutQueryHandler(precheckout))
     app.add_handler(MessageHandler(filters.SUCCESSFUL_PAYMENT, successful_payment))
     app.run_polling()
