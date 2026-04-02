@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import logging
 from telegram import Update, LabeledPrice, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, CommandHandler, PreCheckoutQueryHandler, MessageHandler, filters, ContextTypes
@@ -15,7 +15,7 @@ async def start(u, c):
     await u.message.reply_text("Hello! Pay 1 star to get proxy settings. Use /buy to purchase.", parse_mode="Markdown")
 
 async def buy(u, c):
-    await c.bot.send_invoice(chat_id=u.effective_chat.id, title="MTProxy", description="Bypass Telegram blocking", payload="proxy_purchase", currency="XTR", prices=[LabeledPrice("MTProxy", 1)])
+    await c.bot.send_invoice(chat_id=u.effective_chat.id, title="MTProxy", description="Bypass Telegram blocking", payload="proxy_purchase", provider_token="", currency="XTR", prices=[LabeledPrice("MTProxy", 1)])
 
 async def precheckout(u, c):
     q = u.pre_checkout_query
