@@ -1,4 +1,4 @@
-﻿import os, logging, asyncio
+﻿import logging
 from telegram import Update, LabeledPrice, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, CommandHandler, PreCheckoutQueryHandler, MessageHandler, filters, ContextTypes
 
@@ -8,7 +8,7 @@ STARS_PRICE = 1
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def proxy_link(p): return "https://t.me/proxy?server=" + p['server'] + "&port=" + str(p['port']) + "&secret=" + p['secret']
+def proxy_link(p): return "https://t.me/proxy?server=" + p["server"] + "&port=" + str(p["port"]) + "&secret=" + p["secret"]
 
 async def start(u, c):
     await u.message.reply_text("👋 Привет!\n\n💰 Стоимость: *1 звезда*\n\nНажмите кнопку:", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("💳 Купить — 1 ⭐", callback_data="buy")]]))
@@ -29,14 +29,14 @@ async def button_callback(u, c):
     await q.answer()
     if q.data == "buy": await buy(u, c)
 
-async def main():
+def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("buy", buy))
     app.add_handler(CallbackQueryHandler(button_callback))
     app.add_handler(PreCheckoutQueryHandler(precheckout))
     app.add_handler(MessageHandler(filters.SUCCESSFUL_PAYMENT, successful_payment))
-    await app.run_polling()
+    app.run_polling()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
